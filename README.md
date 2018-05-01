@@ -3,7 +3,7 @@
 ![travis](https://img.shields.io/travis/lifegadget/typed-templates.svg) ![coveralls](https://coveralls.io/repos/github/lifegadget/typed-templates/badge.svg?branch=master) ![license](http://img.shields.io/badge/license-MIT-brightgreen.svg)
 [![twitter](https://img.shields.io/twitter/url/http/yankeeinlondon.svg?style=social) ](http://twitter.com/intent/tweet?text=http://bit.ly/typed-template)
 
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis at ab recusandae fugiat, saepe molestiae doloribus assumenda rem voluptates non illum nemo dolorem architecto animi obcaecati esse eius et iure
+This library is meant to be a relatively simple, yet opinionated, library that will help transform structured information into various outputs based on expected output channels (e.g., email, sms, etc.)
 
 ## Getting started
 
@@ -20,6 +20,8 @@ Now you'll want to create some directories in which you'll leverage this solutio
 
 * templates/**templates**
 * templates/**layouts**
+
+## Template Structure
 
 ### Layouts
 
@@ -60,3 +62,91 @@ Welome Earthling
 ```
 
 So now -- by default -- every email template will be wrapped by our default layouts.
+
+### Templates
+
+Where _layouts_ are templates "at a high level", the "official" templates which reside in the `templates/templates` directory represent the core contents of your message content. Unlike the _layouts_ which are organized by "channel/sub-channel", the _templates_ are organized by a template name. This makes sense because templates are likely to be structured on around **topics** and are less generic than _layouts_. That said, templates also have support for channel/sub-channel distinctions but the structure is inverted (aka, directories are created for topics, filenames distinguish the channel).
+
+Let's look at another example. Let's imagine we have a website and we are sending "welcome" emails when customers sign-up and then two weeks later we send a follow-up email to keep engagement strong and offer some ideas on how to get more value from the website. We might then create two topics: "welcome" and "engagement". Further, because our customers are very "real-time" we have agreed to send and SMS and email every time there is an "outage".
+
+This might look like so:
+
+```sh
+templates / templates
+               \_ welcome
+               \_ engagement
+               \_ outage
+```
+
+In the **welcome** and **engagement** topics we are only expecting email so we'd likely have two handlebars files `email-html.hbs` and `email-text.hbs`. In the **outage** folder, however, we are also expecting SMS so we'd add `sms.hbs` too. Of course, if we wanted to keep things dead simple we could just put a `default.hbs` into any of the topic folders and ALL channels would use that template to build their messages.
+
+### Handlebars
+
+Whether we're talking about _templates_ or _layouts_ the grammer they are being written in is a popular "curly-based" templating language called [Handlebars](https://handlebarsjs.com). We will not cover the specifics of it here but please refer to their docs to understand the full scope of what you can do with your templates/layouts.
+
+## API Surface
+
+Up to now we've talked about adding templating structure but not how you would use this in your code. Let's change gears. Here's an example modelled losely off of our "engagement" email example above ...
+
+```ts
+const data = {
+  name: "Bob Barker",
+  tier: "gold",
+  memberSince: "23 July, 2018"
+};
+const template = TypedTemplate.create()
+  .topic("engagement")
+  .channels("email")
+  .substitute(data)
+  .generate();
+```
+
+which would result in template being a data structure of:
+
+```ts
+interface ITypedTemplate {
+  emailText: string;
+  emailHtml: string;
+}
+```
+
+and where the `template.emailHtml` would be composed in a web-browser or email client like so:
+
+```
+┌─────────────────────────┐
+│  Layout / email-html /  │
+│       default.hbs       │
+│                         │
+│   ┌─────────────────┐   │
+│   │                 │   │
+│   │   template /    │   │
+│   │  engagement /   │   │
+│   │ email-html.hbs  │   │
+│   │                 │   │
+│   └─────────────────┘   │
+│                         │
+└─────────────────────────┘
+```
+
+### List Datasets
+
+Above was a simple example where we were sending to a single user but more often there is a need to send to multiple users. The most typical way of achieving this is to pass in an array into the `.substitute()` method. This signals that there are multiple templates and the resulting `.generate()` call will result in:
+
+```ts
+const template: ITypedTemplate[] = ...
+```
+
+However, there is another way -- which may be more efficient in many cases -- where instead of the `.generate()` call you instead call `.iterator()`. This then passes back an interable:
+
+```ts
+const data = [ {},{}, ... ]
+const template: ITypeTemplateIterable = TypedTemplate.create()
+  .topic("engagement")
+  .channels("email")
+  .substitute(data)
+  .iterator();
+
+while(template.next()) {
+  //...
+}
+```

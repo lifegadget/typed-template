@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": "https://your-server.com/lifegadget/typed-templates",
   "author": "Ken Snyder <ken@ken.net>",
-  "keywords": ["serverless", "typescript"],
+  "keywords": ["typescript", "handlebars"],
   "files": ["lib", "esm"],
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -30,11 +30,14 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
-
   "devDependencies": {
     "@types/node": "^8.10.0"
   },
   "engines": {
     "node": ">=8.0.0"
+  },
+  "dependencies": {
+    "common-types": "^1.7.21",
+    "handlebars": "^4.0.11"
   }
 }
