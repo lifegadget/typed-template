@@ -150,3 +150,13 @@ while(template.next()) {
   //...
 }
 ```
+
+### Pre-compiling Templates
+
+While not always necessary, it is not entirely uncommon to have templates written in Handlebars _pre-compiled_ to a Javascript function. Then at runtime the compilation step is no longer needed. To aid in this, **typed-template** provides a static class method which will precompile all HBS files in your `templates` directory:
+
+```ts
+await TypedTemplate.precompile();
+```
+
+This can then be incorporated into your build tooling to ensure that precompiled templates are ready for use. In cases where you are taking this optimisation step you also need to add a call to `.usePrecompiled()` in the fluent interface so at runtime it knows it can skip compilation w/o needing to check using file IO.
