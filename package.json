@@ -1,7 +1,8 @@
 {
-  "name": "type-template",
+  "name": "typed-template",
   "version": "0.1.0",
-  "description": "type-template",
+  "description":
+    "An opinionated way of building templates, leveraging handlebars and typescript",
   "license": "MIT",
   "repository": "https://your-server.com/lifegadget/typed-templates",
   "author": "Ken Snyder <ken@ken.net>",
@@ -26,8 +27,8 @@
     "watch:test": "ts-node ./scripts/watch.ts test",
     "watch:all": "ts-node ./scripts/watch.ts all",
     "cli": "ts-node cli/index.ts --",
-"docs:dev": "vuepress dev docs",
-"docs:build": "vuepress build docs"
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
 
   "devDependencies": {

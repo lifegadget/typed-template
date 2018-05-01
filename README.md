@@ -1,89 +1,62 @@
-# type-template
+# typed-template
 
-![travis](https://img.shields.io/travis/lifegadget/typed-templates.svg) ![coveralls](https://coveralls.io/repos/github/lifegadget/typed-templates/badge.svg?branch=master) ![license](http://img.shields.io/badge/license-MIT-brightgreen.svg) 
-[![twitter](https://img.shields.io/twitter/url/http/yankeeinlondon.svg?style=social) ](http://twitter.com/home?status=@yankeeinlondon #typed-templates)[![twitterFollow](https://img.shields.io/twitter/follow/yankeeinlondon.svg?style=social&label=Follow) ](https://twitter.com/intent/follow?screen_name=yankeeinlondon)
+![travis](https://img.shields.io/travis/lifegadget/typed-templates.svg) ![coveralls](https://coveralls.io/repos/github/lifegadget/typed-templates/badge.svg?branch=master) ![license](http://img.shields.io/badge/license-MIT-brightgreen.svg)
+[![twitter](https://img.shields.io/twitter/url/http/yankeeinlondon.svg?style=social) ](http://twitter.com/intent/tweet?text=http://bit.ly/typed-template)
 
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis at ab recusandae fugiat, saepe molestiae doloribus assumenda rem voluptates non illum nemo dolorem architecto animi obcaecati esse eius et iure
 
 ## Getting started
 
-### Installation
+First add it as a dependency to your project:
+
 ```
-git clone git@github.com:lifegadget/typed-templates.git
-yarn && yarn upgrade
-```
-
-### Build
-Building does the following:
-
-- runs **tslint**
-- transpiles TS to JS
-- takes serverless configuration and injects into `serverless.yml`
-
-```sh
-yarn run build
+# using npm
+npm install --save typed-template
+# using yarn
+yarn add typed-template
 ```
 
+Now you'll want to create some directories in which you'll leverage this solution. Create the following directories off the root of your project:
 
-### Deployment
+* templates/**templates**
+* templates/**layouts**
 
-Deployment runs a build and then pushes your serverless project/function to your cloud provider.
+### Layouts
 
-```sh
-# deploy everything
-yarn run deploy
-# deploy a specific function or step-function
-yarn run deploy [fn]
+Now let's create the most basic layout you can create:
+
+> templates/layouts/**default.hbs**
+
+```hbs
+{{template}}
 ```
 
-### Testing
-Testing leverages the `mocha` test runner and the `chai` assertions library. All tests can be found in the `/test` directory. 
+Bear in mind a "layout" is a template that _surrounds_ or _encapsulates_ a **template** (more on _templates_ in a moment). In the above example we are basically doing nothing other than displaying the underlying template. Not terribly exciting so let's take a more sophisticated example ... let's use "email" as an example.
 
-```sh
-# test everything
-yarn run test
-# test a subset of scripts
-yarn run test [search]
+`typed-template` layouts are organized into "channels" (and sub-channels). So in the case of **email** that is considered a "channel" which contains two sub-channels:
+
+* html
+* text
+
+So just focusing on the _html_ sub-channel we might create the following file:
+
+> templates/layouts/email-html/**default.hbs**
+
+```hbs
+<h1>Welcome Earthling</h1>
+<div class="body">
+  {{template}}
+</div>
 ```
 
-## Serverless
+whereas the _text_ sub-channel might be:
 
-Most of the service definition/configuration you will do for your serverless function will be found in the `serverless-config` directory. 
+> templates/layouts/email-text/**default.hbs**
 
-### Environment Variables
+```hbs
+Welome Earthling
 
-The `env.yml` file in the `serverless-configuration` folder will look something like:
-
-```yml
-global: &all_stages
-  MAILGUN_API_KEY: "pubkey-xxyyzz"
-  MAILGUN_API_SECRET: "key-xxyyzz"
-
-dev:
-  <<: *all_stages
-  AWS_STAGE: 'dev'
-  FIREBASE_SERVICE_ACCOUNT: ""
-  FIREBASE_DATA_ROOT_URL: ""
-
-stage:
-  <<: *all_stages
-  AWS_STAGE: 'stage'
-  FIREBASE_SERVICE_ACCOUNT: ""
-  FIREBASE_DATA_ROOT_URL: ""
-
-prod:
-  <<: *all_stages
-  AWS_STAGE: 'prod'
-  FIREBASE_SERVICE_ACCOUNT: ""
-  FIREBASE_DATA_ROOT_URL: ""
+{{template}}
 ```
 
-This configuration allows for global variables as well as _stage_-specific settings. These variables will be brought up to your cloud provider the first time you do a full deployment.
-
-### Functions
-
-Serverless is all about functions and while the normal method of defining them is within the `serverless.yml` file this quickly becomes cumbersome so instead we've created a more composable way of defining your functions in TypeScript. This means you can more modularity but it also means you get _typing_ for your functions. 
-
-For instance, you can define a function like so:
-
-
+So now -- by default -- every email template will be wrapped by our default layouts.
