@@ -1,0 +1,39 @@
+{
+  "name": "type-template",
+  "version": "0.1.0",
+  "description": "type-template",
+  "license": "MIT",
+  "repository": "https://your-server.com/lifegadget/typed-templates",
+  "author": "Ken Snyder <ken@ken.net>",
+  "keywords": ["serverless", "typescript"],
+  "files": ["lib", "esm"],
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "clean": "rimraf lib",
+    "lint": "tslint --force --format verbose \"src/**/*.ts\"",
+    "build": "./node_modules/.bin/ts-node ./scripts/build.ts",
+    "deps": "./node_modules/.bin/ts-node ./scripts/deps.ts",
+    "test": "./node_modules/.bin/ts-node ./scripts/test.ts ",
+    "invoke": "./node_modules/.bin/ts-node ./scripts/invoke.ts ",
+    "deploy": "./node_modules/.bin/ts-node ./scripts/deploy.ts ",
+    "publish": "./node_modules/.bin/ts-node ./scripts/publish.ts ",
+    "package": "./node_modules/.bin/ts-node ./scripts/package.ts ",
+    "coverage":
+      "nyc --reporter=text --reporter=html mocha --compilers ts:ts-node/register",
+    "watch": "ts-node ./scripts/watch.ts",
+    "watch:test": "ts-node ./scripts/watch.ts test",
+    "watch:all": "ts-node ./scripts/watch.ts all",
+    "cli": "ts-node cli/index.ts --",
+"docs:dev": "vuepress dev docs",
+"docs:build": "vuepress build docs"
+  },
+
+  "devDependencies": {
+    "@types/node": "^8.10.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}
