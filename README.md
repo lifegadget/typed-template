@@ -136,17 +136,17 @@ Above was a simple example where we were sending to a single user but more often
 const template: ITypedTemplate[] = ...
 ```
 
-However, there is another way -- which may be more efficient in many cases -- where instead of the `.generate()` call you instead call `.iterator()`. This then passes back an interable:
+However, there is another way -- which may be more efficient in many cases -- where instead of the `.generate()` call you instead call `.iterator()`:
 
 ```ts
 const data = [ {},{}, ... ]
-const template: ITypeTemplateIterable = TypedTemplate.create()
+const template: ITypedTemplateIterable = TypedTemplate.create()
   .topic("engagement")
   .channels("email")
   .substitute(data)
   .iterator();
 
-while(template.next()) {
+while(!template.next().done) {
   //...
 }
 ```
