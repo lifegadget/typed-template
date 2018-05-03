@@ -5,17 +5,16 @@ const expect = chai.expect;
 
 describe("Generate →", () => {
   it("single channel request with FQ template, singular substitution", async () => {
-    console.log("starting");
-
-    const template: ITypedTemplate = TypedTemplate.create()
+    let template: ITypedTemplate = TypedTemplate.create()
       .topic("alert")
       .channels("emailHtml")
       .substitute({
         instrument: "hammer"
-      })
-      .generate();
-    expect(template).to.haveOwnProperty("emailHtml");
-    expect(template.emailHtml).to.be.a("string");
-    expect(template.emailHtml).to.include("hammer");
+      });
+
+    const t = await template.generate();
+    expect(t).to.haveOwnProperty("emailHtml");
+    expect(t.emailHtml).to.be.a("string");
+    expect(t.emailHtml).to.match(/hammer/);
   });
 });

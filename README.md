@@ -94,7 +94,7 @@ const data = {
   tier: "gold",
   memberSince: "23 July, 2018"
 };
-const template = TypedTemplate.create()
+const template = await TypedTemplate.create()
   .topic("engagement")
   .channels("email")
   .substitute(data)

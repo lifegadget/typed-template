@@ -80,40 +80,41 @@ export default class TypedTemplate {
   }
 
   public get(prop: string) {
-    return this[`_${prop}`] as Readonly<any>;
+    return this[`_${prop}` as keyof this] as any;
   }
 
   public async generate() {
-    if (this.isListDataset) {
-      let output: IDictionary<string[]> = {};
-      this._substitutions.map(async data => {
-        this._channels.map(async channel => {
+    let output: IDictionary = {};
+    return new Promise(resolve => {
+      if (this.isListDataset) {
+        this._substitutions.map(async (data: IDictionary) => {
+          this._channels.map(async channel => {
+            const template: Handlebars.TemplateDelegate = await this.compileTemplate(
+              this._topic,
+              channel
+            );
+            const result = template(data);
+            add(result).to(output, channel);
+          });
+        });
+
+        return output;
+      } else {
+        this._channels.map(async (channel: string) => {
+          console.log(channel);
+          console.log(this._topic);
           const template: Handlebars.TemplateDelegate = await this.compileTemplate(
             this._topic,
             channel
           );
-          const result = template(data);
-          add(result).to(output, channel);
+          console.log(template(this._substitutions));
+
+          output[channel] = template(this._substitutions);
         });
-      });
 
-      return output;
-    } else {
-      let output: IDictionary<string> = {};
-      this._channels.map(async (channel: string) => {
-        console.log(channel);
-        console.log(this._topic);
-        const template: Handlebars.TemplateDelegate = await this.compileTemplate(
-          this._topic,
-          channel
-        );
-        console.log(template(this._substitutions));
-
-        output[channel] = template(this._substitutions);
-      });
-
-      return output;
-    }
+        resolve(output);
+      }
+    });
   }
 
   public iterator() {
@@ -140,40 +141,49 @@ export default class TypedTemplate {
     console.log(body);
 
     const layout: string = await this.getLayout(topic, channel);
+    if (!/{{template}}/.test(layout)) {
+      const e = new Error(
+        `The layout returned did NOT have a {{template}} tag; this will block the template from being inserted`
+      );
+      e.name = "MissingTemplate";
+      throw e;
+    }
     const compiled = Handlebars.compile(layout.replace("{{template}}", body));
     this._compiledTemplates[templateCacheKey] = compiled;
 
     return compiled;
   }
 
-  private async getFirstFile(dirs: string[]) {
-    console.log(dirs);
-
-    let file: string;
+  private async getFirstFile(dirs: string[], type: string = "undefined") {
     for (let i = 0; i < dirs.length; i++) {
       const exists = await fileExists(dirs[i]);
       if (exists) {
-        return file;
+        return dirs[i];
       }
     }
-    throw new Error(`No matching templates found for topic "${this._topic}"!`);
+    throw new Error(
+      `No matching ${type} found for topic "${this._topic}"!\n  ${dirs.join(",\n")}`
+    );
   }
 
   private async getLayout(topic: string, channel: string): Promise<string> {
-    const base = path.join(this._dir + TypedTemplate.LAYOUTS_DIR);
+    const base = path.join(this._dir, "../test/templates", TypedTemplate.LAYOUTS_DIR);
     const layoutsChoices = [
       path.join(base, `/${channel}/${topic}.hbs`),
       path.join(base, `/${channel}/default.hbs`),
       path.join(base, `default.hbs`)
     ];
-    const layout: string = readFileSync(await this.getFirstFile(layoutsChoices), {
-      encoding: "utf-8"
-    });
+    const file: string = await this.getFirstFile(layoutsChoices, "layout");
+    const layout: string = readFileSync(file, { encoding: "utf-8" });
 
     return layout;
   }
 }
 
 async function fileExists(file: string) {
-  return new Promise(resolve => exists(file, resolve));
+  return new Promise(resolve => {
+    exists(file, result => {
+      resolve(result);
+    });
+  });
 }
