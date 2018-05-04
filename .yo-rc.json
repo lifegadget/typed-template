@@ -1,0 +1,16 @@
+{
+  "generator-typescript-microservice": {
+    "promptValues": {
+      "appName": "typed-template",
+      "serverless": "library-function",
+      "features": [
+        "vuepress",
+        "wallaby",
+        "npm"
+      ],
+      "license": "MIT",
+      "coverage": [],
+      "social": []
+    }
+  }
+}
