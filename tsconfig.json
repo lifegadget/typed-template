@@ -2,7 +2,8 @@
   "compilerOptions": {
     "declaration": true,
     "module": "commonjs",
-    "target": "ES6",
+    "target": "esnext",
+    "lib": ["esnext.asynciterable", "esnext", "es2015.generator"],
     "moduleResolution": "node",
     "sourceMap": true,
     "noImplicitAny": true,
