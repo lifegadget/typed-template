@@ -6,6 +6,7 @@ module.exports = function(w) {
       { pattern: "env.yml", instrument: false },
       { pattern: "test/testing/helpers.ts", instrument: false },
       { pattern: "test/testing/test-console.ts", instrument: false },
+      { pattern: "test/templates/**", instrument: false },
       { pattern: "test/data/*", instrument: false }
     ],
 
@@ -28,16 +29,10 @@ module.exports = function(w) {
       if (!console._restored) {
         console.log("console.log stream returned to normal for test purposes");
         console.log = function() {
-          return require("console").Console.prototype.log.apply(
-            this,
-            arguments
-          );
+          return require("console").Console.prototype.log.apply(this, arguments);
         };
         console.error = function() {
-          return require("console").Console.prototype.error.apply(
-            this,
-            arguments
-          );
+          return require("console").Console.prototype.error.apply(this, arguments);
         };
         console._restored = true;
       }

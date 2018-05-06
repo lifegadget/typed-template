@@ -2,6 +2,8 @@ import { IDictionary } from "common-types";
 import * as path from "path";
 import { fstat, fstatSync, readFileSync, exists } from "fs";
 import * as Handlebars from "handlebars";
+import Parallel from "wait-in-parallel";
+import { StringIterator } from "lodash";
 export interface ITypedTemplate extends IDictionary {
   email?: string;
   emailText?: string;
@@ -26,6 +28,11 @@ export function add<T = string>(value: T) {
       return dict;
     }
   };
+}
+
+export interface ITemplateChannel {
+  channel: string;
+  templates: string[];
 }
 
 export default class TypedTemplate {
@@ -85,40 +92,69 @@ export default class TypedTemplate {
 
   public async generate() {
     let output: IDictionary = {};
-    return new Promise(resolve => {
-      if (this.isListDataset) {
-        this._substitutions.map(async (data: IDictionary) => {
-          this._channels.map(async channel => {
-            const template: Handlebars.TemplateDelegate = await this.compileTemplate(
-              this._topic,
-              channel
-            );
-            const result = template(data);
-            add(result).to(output, channel);
-          });
+    if (this.isListDataset) {
+      // get/compile hbs templates
+      const compilation = new Parallel();
+      this._channels.map(channel =>
+        compilation.add<Handlebars.TemplateDelegate>(
+          channel,
+          this.compileTemplate(this._topic, channel)
+        )
+      );
+      const templates = await compilation.isDone();
+      // iterate through substitutions, apply to templates
+      this._substitutions.map((data: IDictionary) => {
+        Object.keys(templates).map(ch => {
+          add(templates[ch](data)).to(output, ch);
         });
+      });
+    } else {
+      const compilation = new Parallel();
+      this._channels.map(channel =>
+        compilation.add<Handlebars.TemplateDelegate>(
+          channel,
+          this.compileTemplate(this._topic, channel)
+        )
+      );
+      const templates = await compilation.isDone();
+      Object.keys(templates).map(ch => {
+        output[ch] = templates[ch](this._substitutions);
+      });
+    }
 
-        return output;
-      } else {
-        this._channels.map(async (channel: string) => {
-          console.log(channel);
-          console.log(this._topic);
-          const template: Handlebars.TemplateDelegate = await this.compileTemplate(
-            this._topic,
-            channel
-          );
-          console.log(template(this._substitutions));
-
-          output[channel] = template(this._substitutions);
-        });
-
-        resolve(output);
-      }
-    });
+    return output;
   }
 
-  public iterator() {
-    // TODO: implement
+  /**
+   * Provides a way to iterate through the templates, one
+   * channel at a time.
+   */
+  // public async *iterator() {
+  //   let output: IDictionary = {};
+  //   const substitutions = this.isListDataset
+  //     ? this._substitutions
+  //     : [this._substitutions];
+  //   const asyncMapper = {
+  //     [Symbol.asyncIterator]() {
+  //       return Symbol.asyncIterator || Symbol.for("Symbol.asyncIterator");
+  //     }
+  //   };
+  //   yield this._channels.map(async function*(channel) {
+  //     const fn = await this.compileTemplate(this._topic, channel);
+  //     const output: ITemplateChannel = {
+  //       channel,
+  //       templates: []
+  //     };
+  //     this._substitutions.map((data: IDictionary) => {
+  //       output.templates.push(fn(data));
+  //     });
+
+  //     yield* output;
+  //   });
+  // }
+
+  public [Symbol.asyncIterator]() {
+    return Symbol.asyncIterator || Symbol.for("Symbol.asyncIterator");
   }
 
   private async compileTemplate(topic: string, channel: string) {
@@ -128,7 +164,6 @@ export default class TypedTemplate {
     }
 
     const base = path.join(this._dir, "../test/templates", TypedTemplate.TEMPLATES_DIR);
-    console.log(base);
 
     const files = [
       path.join(base, `/${topic}/${channel}.hbs`),
@@ -138,7 +173,6 @@ export default class TypedTemplate {
     const body: string = readFileSync(await this.getFirstFile(files), {
       encoding: "utf-8"
     });
-    console.log(body);
 
     const layout: string = await this.getLayout(topic, channel);
     if (!/{{template}}/.test(layout)) {

@@ -1,24 +1,18 @@
 {
   "name": "typed-template",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "typed-template",
   "license": "MIT",
   "repository": "https://your-server.com/lifegadget/typed-template",
   "author": "Ken Snyder <ken@ken.net>",
-  "keywords": [
-    "serverless",
-    "typescript"
-  ],
-  "files": [
-    "lib",
-    "esm"
-  ],
+  "keywords": ["serverless", "typescript"],
+  "files": ["lib", "esm"],
   "main": "lib/index.js",
   "module": "esm/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
     "clean": "rimraf lib",
-    "lint": "tslint --force --format verbose \"src/**/*.ts\"",
+    "lint": "tslint --force --format verbose \"src/**/*.ts\" -x ''",
     "build": "./node_modules/.bin/ts-node ./scripts/build.ts",
     "deps": "./node_modules/.bin/ts-node ./scripts/deps.ts",
     "deps:reset": "./node_modules/.bin/ts-node ./scripts/reset.ts",
@@ -27,7 +21,12 @@
     "deploy": "./node_modules/.bin/ts-node ./scripts/deploy.ts ",
     "publish": "./node_modules/.bin/ts-node ./scripts/publish.ts ",
     "package": "./node_modules/.bin/ts-node ./scripts/package.ts ",
-    "coverage": "nyc --reporter=text --reporter=html mocha --compilers ts:ts-node/register",
+    "coverage":
+      "nyc --reporter=html _mocha --require ts-node/register 'test/**/*-spec.ts' && open coverage/index.html",
+    "coverage:coveralls":
+      "nyc --reporter=text-lcov _mocha --require ts-node/register 'test/**/*-spec.ts' | ./node_modules/.bin/coveralls",
+    "coverage:codecov":
+      "nyc _mocha --reporter=json --require ts-node/register 'test/**/*-spec.ts' > coverage/coverage.json",
     "watch": "ts-node ./scripts/watch.ts",
     "watch:test": "ts-node ./scripts/watch.ts test",
     "watch:all": "ts-node ./scripts/watch.ts all",
@@ -52,6 +51,7 @@
     "coveralls": "^3.0.1",
     "faker": "^4.1.0",
     "inquirer": "^5.2.0",
+    "istanbul": "^0.4.5",
     "lodash.first": "^3.0.0",
     "lodash.last": "^3.0.0",
     "mocha": "^5.1.1",
@@ -71,21 +71,15 @@
     "node": ">=6.0.0"
   },
   "nyc": {
-    "extension": [
-      ".ts",
-      ".tsx"
-    ],
-    "exclude": [
-      "**/*.d.ts"
-    ],
-    "reporter": [
-      "html"
-    ],
+    "extension": [".ts", ".tsx"],
+    "include": ["src"],
+    "exclude": ["**/*.d.ts"],
+    "reporter": [],
     "all": true
   },
   "dependencies": {
     "common-types": "^1.7.21",
     "handlebars": "^4.0.11",
-    "wait-in-parallel": "^1.0.0-beta.1"
+    "wait-in-parallel": "^1.0.0"
   }
 }
