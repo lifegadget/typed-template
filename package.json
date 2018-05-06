@@ -6,7 +6,7 @@
   "repository": "https://your-server.com/lifegadget/typed-template",
   "author": "Ken Snyder <ken@ken.net>",
   "keywords": ["serverless", "typescript"],
-  "files": ["lib", "esm"],
+  "files": ["lib", "dist", "coverage"],
   "main": "lib/index.js",
   "module": "esm/index.js",
   "typings": "lib/index.d.ts",
