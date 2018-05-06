@@ -9,7 +9,10 @@
         "npm"
       ],
       "license": "MIT",
-      "coverage": [],
+      "coverage": [
+        "coveralls",
+        "codecov"
+      ],
       "social": []
     }
   }
