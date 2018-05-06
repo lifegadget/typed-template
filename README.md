@@ -1,8 +1,6 @@
 # typed-template
 
-![travis](https://img.shields.io/travis/lifegadget/typed-template.svg) [![coveralls](https://coveralls.io/repos/github/lifegadget/typed-template/badge.svg?branch=master)](https://coveralls.io/github/lifegadget/typed-template) [![codecov](https://codecov.io/gh/lifegadget/typed-template/branch/master/graph/badge.svg)](https://codecov.io/gh/lifegadget/typed-template) ![license](http://img.shields.io/badge/license-MIT-brightgreen.svg)
-
-[![twitter](https://img.shields.io/twitter/url/http/yankeeinlondon.svg?style=social) ](http://twitter.com/intent/tweet?text=http://bit.ly/typed-template)
+![travis](https://img.shields.io/travis/lifegadget/typed-template.svg) [![coveralls](https://coveralls.io/repos/github/lifegadget/typed-template/badge.svg?branch=master)](https://coveralls.io/github/lifegadget/typed-template) [![codecov](https://codecov.io/gh/lifegadget/typed-template/branch/master/graph/badge.svg)](https://codecov.io/gh/lifegadget/typed-template) [![license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT) [![twitter](https://img.shields.io/twitter/url/http/yankeeinlondon.svg?style=social) ](http://twitter.com/intent/tweet?text=http://bit.ly/typed-template)
 
 This library is meant to be a relatively simple, yet opinionated, library that will help transform structured information into various outputs based on expected output channels (e.g., email, sms, etc.)
 
