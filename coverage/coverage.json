@@ -1,0 +1,200 @@
+{
+  "stats": {
+    "suites": 3,
+    "tests": 13,
+    "passes": 13,
+    "pending": 0,
+    "failures": 0,
+    "start": "2018-05-07T18:10:17.385Z",
+    "end": "2018-05-07T18:10:17.420Z",
+    "duration": 35
+  },
+  "tests": [
+    {
+      "title": "Can instantiate with create() static method",
+      "fullTitle": "Basics →  Can instantiate with create() static method",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "Fluent interface setters returns back obj reference",
+      "fullTitle": "Basics →  Fluent interface setters returns back obj reference",
+      "duration": 1,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "isListDataset accurately reflects multiplicity of data",
+      "fullTitle": "Basics →  isListDataset accurately reflects multiplicity of data",
+      "duration": 0,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "single channel request with FQ template, default channel for layout",
+      "fullTitle": "Generate (singular substitute) → single channel request with FQ template, default channel for layout",
+      "duration": 13,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "multi channel request with FQ template, default channel for layout",
+      "fullTitle": "Generate (singular substitute) → multi channel request with FQ template, default channel for layout",
+      "duration": 4,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "unknown template and channel reverts to default template and layout",
+      "fullTitle": "Generate (singular substitute) → unknown template and channel reverts to default template and layout",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "known template but unknown layout",
+      "fullTitle": "Generate (singular substitute) → known template but unknown layout",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "known template with specific layout for template",
+      "fullTitle": "Generate (singular substitute) → known template with specific layout for template",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "single channel request with FQ template, default channel for layout",
+      "fullTitle": "Generate (singular substitute) → single channel request with FQ template, default channel for layout",
+      "duration": 1,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "multi channel request with FQ template, default channel for layout",
+      "fullTitle": "Generate (singular substitute) → multi channel request with FQ template, default channel for layout",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "unknown template and channel reverts to default template and layout",
+      "fullTitle": "Generate (singular substitute) → unknown template and channel reverts to default template and layout",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "known template but unknown layout",
+      "fullTitle": "Generate (singular substitute) → known template but unknown layout",
+      "duration": 1,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "known template with specific layout for template",
+      "fullTitle": "Generate (singular substitute) → known template with specific layout for template",
+      "duration": 1,
+      "currentRetry": 0,
+      "err": {}
+    }
+  ],
+  "pending": [],
+  "failures": [],
+  "passes": [
+    {
+      "title": "Can instantiate with create() static method",
+      "fullTitle": "Basics →  Can instantiate with create() static method",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "Fluent interface setters returns back obj reference",
+      "fullTitle": "Basics →  Fluent interface setters returns back obj reference",
+      "duration": 1,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "isListDataset accurately reflects multiplicity of data",
+      "fullTitle": "Basics →  isListDataset accurately reflects multiplicity of data",
+      "duration": 0,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "single channel request with FQ template, default channel for layout",
+      "fullTitle": "Generate (singular substitute) → single channel request with FQ template, default channel for layout",
+      "duration": 13,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "multi channel request with FQ template, default channel for layout",
+      "fullTitle": "Generate (singular substitute) → multi channel request with FQ template, default channel for layout",
+      "duration": 4,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "unknown template and channel reverts to default template and layout",
+      "fullTitle": "Generate (singular substitute) → unknown template and channel reverts to default template and layout",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "known template but unknown layout",
+      "fullTitle": "Generate (singular substitute) → known template but unknown layout",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "known template with specific layout for template",
+      "fullTitle": "Generate (singular substitute) → known template with specific layout for template",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "single channel request with FQ template, default channel for layout",
+      "fullTitle": "Generate (singular substitute) → single channel request with FQ template, default channel for layout",
+      "duration": 1,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "multi channel request with FQ template, default channel for layout",
+      "fullTitle": "Generate (singular substitute) → multi channel request with FQ template, default channel for layout",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "unknown template and channel reverts to default template and layout",
+      "fullTitle": "Generate (singular substitute) → unknown template and channel reverts to default template and layout",
+      "duration": 2,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "known template but unknown layout",
+      "fullTitle": "Generate (singular substitute) → known template but unknown layout",
+      "duration": 1,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "title": "known template with specific layout for template",
+      "fullTitle": "Generate (singular substitute) → known template with specific layout for template",
+      "duration": 1,
+      "currentRetry": 0,
+      "err": {}
+    }
+  ]
+}
