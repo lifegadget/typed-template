@@ -5,3 +5,6 @@ coverage:
   round: up
   range: 40...75
   precision: 2
+
+ignore:
+  - "/node_modules/**"

@@ -7,6 +7,7 @@ script:
   - yarn run build
   - yarn run test --ignoreLint
   - yarn run coverage:coveralls
+  - yarn run coverage:codecov
 sudo: required
 before_install: # if "install" is overridden
   # Repo for Yarn
