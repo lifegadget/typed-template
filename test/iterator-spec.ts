@@ -1,5 +1,5 @@
 // tslint:disable:no-implicit-dependencies
-import TypedTemplate, { ITypedTemplate } from "../src/index";
+import TypedTemplate from "../src/index";
 import * as chai from "chai";
 
 const expect = chai.expect;

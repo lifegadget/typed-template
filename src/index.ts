@@ -3,26 +3,38 @@ import * as path from "path";
 import { fstat, fstatSync, readFileSync, exists } from "fs";
 import * as Handlebars from "handlebars";
 import Parallel from "wait-in-parallel";
-import { StringIterator } from "lodash";
-export interface ITypedTemplate extends IDictionary {
-  email?: string;
+
+export interface IGenericChannelSuggestion {
   emailText?: string;
   emailHtml?: string;
   sms?: string;
+  [other: string]: string;
 }
 
-export interface ITypedTemplateIterable {
-  value: ITypedTemplate;
-  done: boolean;
-}
+// export interface ITypedTemplateIterable {
+//   value: ITypedTemplate;
+//   done: boolean;
+// }
 
-export function add<T = string>(value: T) {
+/**
+ * Helper interface/function which provides nice fluent way of
+ * adding
+ *
+ * @param value
+ */
+export function add<K = string>(value: K) {
   return {
-    to(dict: IDictionary<T[]>, prop: string) {
+    to(dict: any, prop: string) {
       if (Array.isArray(dict[prop])) {
         dict[prop].push(value);
-      } else {
+      } else if (typeof dict === "object") {
         dict[prop] = [value];
+      } else {
+        const e = new Error(
+          `the property being added must be added to a either an array or object but in this case it was a "${typeof dict}"`
+        );
+        e.name = "TemplateAdditionNotAllowed";
+        throw e;
       }
 
       return dict;
@@ -35,14 +47,25 @@ export interface ITemplateChannel {
   templates: string[];
 }
 
-export default class TypedTemplate {
+// export interface IChannelDictionary<T> {
+//   [prop: keyof T]: string;
+// }
+
+/**
+ * A simple utility for building templates for multiple
+ * destination channels (e.g., sms, email, etc.).
+ *
+ * The generic passed in at the class level dictates the
+ * expected data structure of the "substitutions"
+ */
+export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestion> {
   /** Pre-compiles all HBS files into Javascript functions */
   public static precompile() {
     //
   }
 
-  public static create() {
-    const obj = new TypedTemplate();
+  public static create<TT = IDictionary, OO = IGenericChannelSuggestion>() {
+    const obj = new TypedTemplate<TT, OO>();
     return obj;
   }
 
@@ -50,7 +73,7 @@ export default class TypedTemplate {
 
   private _topic: string;
   private _channels: string[];
-  private _substitutions: IDictionary;
+  private _substitutions: T;
   private _usePrecompiled: boolean = false;
   private _compiledTemplates: IDictionary = {};
 
@@ -67,12 +90,12 @@ export default class TypedTemplate {
     return this;
   }
 
-  public channels(...c: string[]) {
+  public channels(...c: Array<keyof O>) {
     this._channels = c;
     return this;
   }
 
-  public substitute(s: IDictionary) {
+  public substitute(s: T) {
     this._substitutions = s;
     return this;
   }
@@ -91,9 +114,10 @@ export default class TypedTemplate {
   }
 
   public async generate() {
-    let output: IDictionary = {};
-    if (this.isListDataset) {
-      // get/compile hbs templates
+    let output: Partial<O> = {};
+    if (Array.isArray(this._substitutions)) {
+      // LIST BASED SUBSTITUTIONS
+      const channels = this._channels;
       const compilation = new Parallel();
       this._channels.map(channel =>
         compilation.add<Handlebars.TemplateDelegate>(
@@ -103,12 +127,13 @@ export default class TypedTemplate {
       );
       const templates = await compilation.isDone();
       // iterate through substitutions, apply to templates
-      this._substitutions.map((data: IDictionary) => {
-        Object.keys(templates).map(ch => {
+      this._substitutions.map((data: keyof T) => {
+        Object.keys(templates).map((ch: keyof typeof templates) => {
           add(templates[ch](data)).to(output, ch);
         });
       });
     } else {
+      // SINGLE SUBSTITUTION HASH
       const compilation = new Parallel();
       this._channels.map(channel =>
         compilation.add<Handlebars.TemplateDelegate>(
@@ -117,12 +142,12 @@ export default class TypedTemplate {
         )
       );
       const templates = await compilation.isDone();
-      Object.keys(templates).map(ch => {
-        output[ch] = templates[ch](this._substitutions);
+      Object.keys(templates).map((ch: keyof typeof templates) => {
+        (output as any)[ch] = templates[ch](this._substitutions);
       });
     }
 
-    return output;
+    return output as O;
   }
 
   /**
