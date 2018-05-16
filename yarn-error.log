@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn run test
+  /usr/local/bin/node /usr/local/bin/yarn run test generate-singular
 
 PATH: 
   /usr/local/bin:/Users/ken/.yarn/bin:/usr/local/share/android-sdk/platform-tools:.:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/MacGPG2/bin:/Users/ken/.yarn/bin:/usr/local/share/android-sdk/platform-tools:.:/Users/ken/Library/Python/2.7/bin:/usr/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/X11/bin:/Users/kensnyder/.rvm/bin:/Users/kensnyder/.ec2/bin:/Developer/usr/bin:/Users/kensnyder/pear/bin:/usr/local/share/npm/bin:/Applications/Couchbase Server.app/Contents/Resources/couchbase-core/bin:/Users/kensnyder/repos/mine/api/commandline/bin:/Users/ken/Library/Python/2.7/bin:/usr/local/sbin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/kensnyder/.rvm/bin:/Users/kensnyder/.ec2/bin:/Developer/usr/bin:/Users/kensnyder/pear/bin:/usr/local/share/npm/bin:/Applications/Couchbase Server.app/Contents/Resources/couchbase-core/bin:/Users/kensnyder/repos/mine/api/commandline/bin
@@ -16,13 +16,20 @@ Platform:
 npm manifest: 
   {
     "name": "typed-template",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "typed-template",
     "license": "MIT",
     "repository": "https://your-server.com/lifegadget/typed-template",
     "author": "Ken Snyder <ken@ken.net>",
-    "keywords": ["serverless", "typescript"],
-    "files": ["lib", "dist", "coverage"],
+    "keywords": [
+      "serverless",
+      "typescript"
+    ],
+    "files": [
+      "lib",
+      "dist",
+      "coverage"
+    ],
     "main": "lib/index.js",
     "module": "esm/index.js",
     "typings": "lib/index.d.ts",
@@ -37,12 +44,9 @@ npm manifest:
       "deploy": "./node_modules/.bin/ts-node ./scripts/deploy.ts ",
       "publish": "./node_modules/.bin/ts-node ./scripts/publish.ts ",
       "package": "./node_modules/.bin/ts-node ./scripts/package.ts ",
-      "coverage":
-        "nyc --reporter=html _mocha --require ts-node/register 'test/**/*-spec.ts' && open coverage/index.html",
-      "coverage:coveralls":
-        "nyc --reporter=text-lcov _mocha --require ts-node/register 'test/**/*-spec.ts'",
-      "coverage:codecov":
-        "nyc _mocha --reporter=json --require ts-node/register 'test/**/*-spec.ts' > coverage/coverage.json",
+      "coverage": "nyc --reporter=html _mocha --require ts-node/register 'test/**/*-spec.ts' && open coverage/index.html",
+      "coverage:coveralls": "nyc --reporter=text-lcov _mocha --require ts-node/register 'test/**/*-spec.ts'",
+      "coverage:codecov": "nyc _mocha --reporter=json --require ts-node/register 'test/**/*-spec.ts' > coverage/coverage.json",
       "watch": "ts-node ./scripts/watch.ts",
       "watch:test": "ts-node ./scripts/watch.ts test",
       "watch:all": "ts-node ./scripts/watch.ts all",
@@ -89,14 +93,23 @@ npm manifest:
       "node": ">=6.0.0"
     },
     "nyc": {
-      "extension": [".ts", ".tsx"],
-      "include": ["src"],
-      "exclude": ["**/*.d.ts"],
+      "extension": [
+        ".ts",
+        ".tsx"
+      ],
+      "include": [
+        "src"
+      ],
+      "exclude": [
+        "**/*.d.ts"
+      ],
       "reporter": [],
       "all": true
     },
     "dependencies": {
+      "@types/find-root": "^1.1.1",
       "common-types": "^1.7.21",
+      "find-root": "^1.1.0",
       "handlebars": "^4.0.11",
       "wait-in-parallel": "^1.0.0"
     }
@@ -734,6 +747,12 @@ Lockfile:
   "@types/faker@^4.1.2":
     version "4.1.2"
     resolved "https://registry.yarnpkg.com/@types/faker/-/faker-4.1.2.tgz#f8ab50c9f9af68c160dd71b63f83e24b712d0df5"
+  
+  "@types/find-root@^1.1.1":
+    version "1.1.1"
+    resolved "https://registry.yarnpkg.com/@types/find-root/-/find-root-1.1.1.tgz#1cc5a8008aa3273f870f2ae17bb3461a1632d4b8"
+    dependencies:
+      "@types/node" "*"
   
   "@types/glob@*":
     version "5.0.35"
@@ -2910,6 +2929,10 @@ Lockfile:
       commondir "^1.0.1"
       make-dir "^1.0.0"
       pkg-dir "^2.0.0"
+  
+  find-root@^1.1.0:
+    version "1.1.0"
+    resolved "https://registry.yarnpkg.com/find-root/-/find-root-1.1.0.tgz#abcfc8ba76f708c42a97b3d685b7e9450bfb9ce4"
   
   find-up@^1.0.0:
     version "1.1.2"
@@ -7815,7 +7838,7 @@ Trace:
   Error: Command failed.
   Exit code: 1
   Command: sh
-  Arguments: -c ./node_modules/.bin/ts-node ./scripts/test.ts 
+  Arguments: -c ./node_modules/.bin/ts-node ./scripts/test.ts  generate-singular
   Directory: /Users/ken/mine/oss/typed-templates
   Output:
   

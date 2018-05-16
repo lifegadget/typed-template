@@ -5,7 +5,7 @@ const expect = chai.expect;
 
 describe("Generate (singular substitute) →", () => {
   it("single channel request with FQ template, default channel for layout", async () => {
-    let template: TypedTemplate = TypedTemplate.create()
+    let template: TypedTemplate = TypedTemplate.create("test")
       .topic("alert")
       .channels("emailHtml")
       .substitute({
@@ -22,7 +22,7 @@ describe("Generate (singular substitute) →", () => {
   });
 
   it("multi channel request with FQ template, default channel for layout", async () => {
-    let template: TypedTemplate = TypedTemplate.create()
+    let template: TypedTemplate = TypedTemplate.create("test")
       .topic("alert")
       .channels("emailHtml", "emailText")
       .substitute({
@@ -42,7 +42,7 @@ describe("Generate (singular substitute) →", () => {
   });
 
   it("unknown template and channel reverts to default template and layout", async () => {
-    let template = TypedTemplate.create()
+    let template = TypedTemplate.create("test")
       .topic("nonsense")
       .channels("foobar")
       .substitute({
@@ -59,7 +59,7 @@ describe("Generate (singular substitute) →", () => {
   });
 
   it("known template but unknown layout", async () => {
-    let template = TypedTemplate.create()
+    let template = TypedTemplate.create("test")
       .topic("alert")
       .channels("foobar")
       .substitute({
@@ -76,7 +76,7 @@ describe("Generate (singular substitute) →", () => {
   });
 
   it("known template with specific layout for template", async () => {
-    let template = TypedTemplate.create()
+    let template = TypedTemplate.create("test")
       .topic("welcome")
       .channels("emailHtml")
       .substitute({
