@@ -1,6 +1,6 @@
 {
   "name": "typed-template",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "typed-template",
   "license": "MIT",
   "repository": "https://your-server.com/lifegadget/typed-template",
@@ -8,7 +8,7 @@
   "keywords": ["serverless", "typescript"],
   "files": ["lib", "dist", "coverage"],
   "main": "lib/index.js",
-  "module": "esm/index.js",
+  "module": "dist/typed-template.es.js",
   "typings": "lib/index.d.ts",
   "scripts": {
     "clean": "rimraf lib",
