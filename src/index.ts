@@ -72,7 +72,11 @@ export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestio
   }
 
   constructor(dir?: string) {
-    const root = findRoot(process.cwd());
+    const dirs = new Set(__dirname.split("/"));
+    const root = dirs.has("node_modules")
+      ? findRoot(path.resolve(__dirname, "../.."))
+      : findRoot(__dirname);
+
     this._dir = dir ? path.resolve(root, dir) : root;
   }
 
