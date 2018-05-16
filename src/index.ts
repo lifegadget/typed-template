@@ -3,6 +3,7 @@ import * as path from "path";
 import { fstat, fstatSync, readFileSync, exists } from "fs";
 import * as Handlebars from "handlebars";
 import Parallel from "wait-in-parallel";
+import findRoot = require("find-root");
 
 export interface IGenericChannelSuggestion {
   emailText?: string;
@@ -64,13 +65,17 @@ export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestio
     //
   }
 
-  public static create<TT = IDictionary, OO = IGenericChannelSuggestion>() {
-    const obj = new TypedTemplate<TT, OO>();
+  public static create<TT = IDictionary, OO = IGenericChannelSuggestion>(dir?: string) {
+    const obj = new TypedTemplate<TT, OO>(dir);
     return obj;
   }
 
-  constructor(private _dir: string = __dirname) {}
+  constructor(dir?: string) {
+    const root = findRoot(__dirname);
+    this._dir = dir ? path.resolve(root, dir) : root;
+  }
 
+  private _dir: string;
   private _topic: string;
   private _channels: string[];
   private _substitutions: T;
