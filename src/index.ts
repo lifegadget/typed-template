@@ -1,5 +1,6 @@
 import { IDictionary } from "common-types";
 import * as path from "path";
+import * as fs from "fs";
 import { fstat, fstatSync, readFileSync, exists } from "fs";
 import * as Handlebars from "handlebars";
 import Parallel from "wait-in-parallel";
@@ -71,7 +72,7 @@ export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestio
   }
 
   constructor(dir?: string) {
-    const root = findRoot(__dirname);
+    const root = findRoot(process.cwd());
     this._dir = dir ? path.resolve(root, dir) : root;
   }
 
