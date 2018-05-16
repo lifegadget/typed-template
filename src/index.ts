@@ -205,9 +205,17 @@ export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestio
       path.join(base, `/${topic}/default.hbs`),
       path.join(base, `/default.hbs`)
     ];
-    const body: string = readFileSync(await this.getFirstFile(files), {
-      encoding: "utf-8"
-    });
+    let body: string;
+    const file = await this.getFirstFile(files);
+    try {
+      body = readFileSync(file, {
+        encoding: "utf-8"
+      });
+    } catch (e) {
+      const err = new Error(`Failed to read file "${file}": ${e.message}`);
+      err.name = "FileNotFound";
+      throw err;
+    }
 
     const layout: string = await this.getLayout(topic, channel);
     if (!/{{template}}/.test(layout)) {

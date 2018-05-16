@@ -1,19 +1,12 @@
 {
   "name": "typed-template",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "typed-template",
   "license": "MIT",
   "repository": "https://your-server.com/lifegadget/typed-template",
   "author": "Ken Snyder <ken@ken.net>",
-  "keywords": [
-    "serverless",
-    "typescript"
-  ],
-  "files": [
-    "lib",
-    "dist",
-    "coverage"
-  ],
+  "keywords": ["serverless", "typescript"],
+  "files": ["lib", "dist", "coverage"],
   "main": "lib/index.js",
   "module": "esm/index.js",
   "typings": "lib/index.d.ts",
@@ -28,9 +21,12 @@
     "deploy": "./node_modules/.bin/ts-node ./scripts/deploy.ts ",
     "publish": "./node_modules/.bin/ts-node ./scripts/publish.ts ",
     "package": "./node_modules/.bin/ts-node ./scripts/package.ts ",
-    "coverage": "nyc --reporter=html _mocha --require ts-node/register 'test/**/*-spec.ts' && open coverage/index.html",
-    "coverage:coveralls": "nyc --reporter=text-lcov _mocha --require ts-node/register 'test/**/*-spec.ts'",
-    "coverage:codecov": "nyc _mocha --reporter=json --require ts-node/register 'test/**/*-spec.ts' > coverage/coverage.json",
+    "coverage":
+      "nyc --reporter=html _mocha --require ts-node/register 'test/**/*-spec.ts' && open coverage/index.html",
+    "coverage:coveralls":
+      "nyc --reporter=text-lcov _mocha --require ts-node/register 'test/**/*-spec.ts'",
+    "coverage:codecov":
+      "nyc _mocha --reporter=json --require ts-node/register 'test/**/*-spec.ts' > coverage/coverage.json",
     "watch": "ts-node ./scripts/watch.ts",
     "watch:test": "ts-node ./scripts/watch.ts test",
     "watch:all": "ts-node ./scripts/watch.ts all",
@@ -77,16 +73,9 @@
     "node": ">=6.0.0"
   },
   "nyc": {
-    "extension": [
-      ".ts",
-      ".tsx"
-    ],
-    "include": [
-      "src"
-    ],
-    "exclude": [
-      "**/*.d.ts"
-    ],
+    "extension": [".ts", ".tsx"],
+    "include": ["src"],
+    "exclude": ["**/*.d.ts"],
     "reporter": [],
     "all": true
   },
