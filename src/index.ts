@@ -73,9 +73,10 @@ export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestio
 
   constructor(dir?: string) {
     const dirs = new Set(__dirname.split("/"));
-    const root = dirs.has("node_modules")
-      ? findRoot(path.resolve(__dirname, "../.."))
-      : findRoot(__dirname);
+    // const root = dirs.has("node_modules")
+    //   ? findRoot(path.resolve(__dirname, ".."))
+    //   : findRoot(__dirname);
+    const root = process.cwd();
 
     this._dir = dir ? path.resolve(root, dir) : root;
   }
@@ -87,6 +88,7 @@ export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestio
   private _usePrecompiled: boolean = false;
   private _compiledTemplates: IDictionary = {};
 
+  public static BASE_DIR: string = "templates";
   public static TEMPLATES_DIR: string = "templates";
   public static LAYOUTS_DIR: string = "layouts";
 
@@ -129,6 +131,7 @@ export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestio
       // LIST BASED SUBSTITUTIONS
       const channels = this._channels;
       const compilation = new Parallel();
+
       this._channels.map(channel =>
         compilation.add<Handlebars.TemplateDelegate>(
           channel,
@@ -160,45 +163,17 @@ export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestio
     return output as O;
   }
 
-  /**
-   * Provides a way to iterate through the templates, one
-   * channel at a time.
-   */
-  // public async *iterator() {
-  //   let output: IDictionary = {};
-  //   const substitutions = this.isListDataset
-  //     ? this._substitutions
-  //     : [this._substitutions];
-  //   const asyncMapper = {
-  //     [Symbol.asyncIterator]() {
-  //       return Symbol.asyncIterator || Symbol.for("Symbol.asyncIterator");
-  //     }
-  //   };
-  //   yield this._channels.map(async function*(channel) {
-  //     const fn = await this.compileTemplate(this._topic, channel);
-  //     const output: ITemplateChannel = {
-  //       channel,
-  //       templates: []
-  //     };
-  //     this._substitutions.map((data: IDictionary) => {
-  //       output.templates.push(fn(data));
-  //     });
-
-  //     yield* output;
-  //   });
-  // }
-
-  public [Symbol.asyncIterator]() {
-    return Symbol.asyncIterator || Symbol.for("Symbol.asyncIterator");
-  }
-
   private async compileTemplate(topic: string, channel: string) {
     const templateCacheKey = `${topic}-${channel}`;
     if (this._compiledTemplates[templateCacheKey]) {
       return this._compiledTemplates[templateCacheKey];
     }
 
-    const base = path.join(this._dir, "../test/templates", TypedTemplate.TEMPLATES_DIR);
+    const base = path.join(
+      this._dir,
+      TypedTemplate.BASE_DIR,
+      TypedTemplate.TEMPLATES_DIR
+    );
 
     const files = [
       path.join(base, `/${topic}/${channel}.hbs`),
@@ -206,7 +181,8 @@ export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestio
       path.join(base, `/default.hbs`)
     ];
     let body: string;
-    const file = await this.getFirstFile(files);
+    const file = await this.getBestFile(files);
+
     try {
       body = readFileSync(file, {
         encoding: "utf-8"
@@ -218,6 +194,7 @@ export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestio
     }
 
     const layout: string = await this.getLayout(topic, channel);
+
     if (!/{{template}}/.test(layout)) {
       const e = new Error(
         `The layout returned did NOT have a {{template}} tag; this will block the template from being inserted`
@@ -231,7 +208,7 @@ export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestio
     return compiled;
   }
 
-  private async getFirstFile(dirs: string[], type: string = "undefined") {
+  private async getBestFile(dirs: string[], type: string = "undefined") {
     for (let i = 0; i < dirs.length; i++) {
       const exists = await fileExists(dirs[i]);
       if (exists) {
@@ -244,13 +221,14 @@ export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestio
   }
 
   private async getLayout(topic: string, channel: string): Promise<string> {
-    const base = path.join(this._dir, "../test/templates", TypedTemplate.LAYOUTS_DIR);
+    const base = path.join(this._dir, TypedTemplate.BASE_DIR, TypedTemplate.LAYOUTS_DIR);
     const layoutsChoices = [
       path.join(base, `/${channel}/${topic}.hbs`),
       path.join(base, `/${channel}/default.hbs`),
       path.join(base, `default.hbs`)
     ];
-    const file: string = await this.getFirstFile(layoutsChoices, "layout");
+    const file: string = await this.getBestFile(layoutsChoices, "layout");
+
     const layout: string = readFileSync(file, { encoding: "utf-8" });
 
     return layout;
