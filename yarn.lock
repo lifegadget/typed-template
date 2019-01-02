@@ -1937,6 +1937,11 @@ common-tags@^1.4.0:
   dependencies:
     babel-runtime "^6.26.0"
 
+common-types@^1.1.0:
+  version "1.8.18"
+  resolved "https://registry.yarnpkg.com/common-types/-/common-types-1.8.18.tgz#ad4f085fc70648e4250292cce32470423b8b9707"
+  integrity sha512-wA4tCfulIL75nogYpIaCxvxHUR8HfzsPDz4OLhgN8OZLx6grurOoHu5/ZxHQPUMZkeSpegJ6ZHkR15wvspDilA==
+
 common-types@^1.7.21:
   version "1.7.27"
   resolved "https://registry.yarnpkg.com/common-types/-/common-types-1.7.27.tgz#e0bd4f0d7a7c997de732a489773db3680d8c12b8"
@@ -7039,6 +7044,13 @@ type-is@^1.5.5:
     media-typer "0.3.0"
     mime-types "~2.1.18"
 
+typed-conversions@^0.7.4:
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/typed-conversions/-/typed-conversions-0.7.4.tgz#c0a505caa93d791e0e0df136b668c27b2f7a6754"
+  integrity sha512-KL3pf8uppsDXLbIppPHvfY+NzxdNAkPYf2GCXw7Smu2P/IgUWWHsRY0ylUEAVizIKwCc53INwdjFJfa3H5B1dA==
+  dependencies:
+    common-types "^1.1.0"
+
 typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
@@ -7446,12 +7458,14 @@ vuepress@^0.8.4:
     webpackbar "^2.6.1"
     workbox-build "^3.1.0"
 
-wait-in-parallel@^1.0.10:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/wait-in-parallel/-/wait-in-parallel-1.0.10.tgz#2f777e3c68c3bd3aab3240152a11e54953a44204"
+wait-in-parallel@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/wait-in-parallel/-/wait-in-parallel-1.1.4.tgz#b1bc523723f7ada590504b2a00f287e51d00927b"
+  integrity sha512-4TFvVM1lx17+LTLEPXntuDtvKPUkGRL8e/gMvYmnZkUE7f84gJWXTW+hbGtOCC1cJTa8uUfJwgG9KxOosPP7uQ==
   dependencies:
     "@types/inquirer" "^0.0.41"
     common-types "^1.7.21"
+    typed-conversions "^0.7.4"
 
 watchpack@^1.5.0:
   version "1.6.0"

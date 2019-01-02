@@ -3,7 +3,7 @@ import * as path from "path";
 import * as fs from "fs";
 import { fstat, fstatSync, readFileSync, exists } from "fs";
 import * as Handlebars from "handlebars";
-import Parallel from "wait-in-parallel";
+import { Parallel} from "wait-in-parallel";
 import findRoot = require("find-root");
 
 export interface IGenericChannelSuggestion {
@@ -142,7 +142,7 @@ export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestio
       // iterate through substitutions, apply to templates
       this._substitutions.map((data: keyof T) => {
         Object.keys(templates).map((ch: keyof typeof templates) => {
-          add(templates[ch](data)).to(output, ch);
+          add(templates[ch](data)).to(output, ch as string);
         });
       });
     } else {

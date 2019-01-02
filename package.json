@@ -1,9 +1,9 @@
 {
   "name": "typed-template",
-  "version": "1.0.9",
+  "version": "1.1.1",
   "description": "typed-template",
   "license": "MIT",
-  "repository": "https://your-server.com/lifegadget/typed-template",
+  "repository": "https://github.com/lifegadget/typed-template",
   "author": "Ken Snyder <ken@ken.net>",
   "keywords": ["serverless", "typescript"],
   "files": ["lib", "dist", "coverage"],
@@ -85,6 +85,6 @@
     "common-types": "^1.7.21",
     "find-root": "^1.1.0",
     "handlebars": "^4.0.11",
-    "wait-in-parallel": "^1.0.10"
+    "wait-in-parallel": "^1.1.4"
   }
 }
