@@ -1,7 +1,6 @@
 // tslint:disable:no-implicit-dependencies
 import chalk from "chalk";
 import { asyncExec } from "async-shelljs";
-import * as rm from "rimraf";
 
 export async function publish(version?: string) {
   try {
@@ -23,10 +22,15 @@ export async function publish(version?: string) {
       currentVersion
     )
   );
-  const info: any = JSON.parse(await asyncExec(`yarn info --json`, { silent: true }));
+  const info: any = JSON.parse(
+    await asyncExec(`yarn info --json`, { silent: true })
+  );
   const npmVersion = info.data.version.trim();
   console.log(
-    chalk.dim(`- The latest published version on ${chalk.bold("npm")} is`, npmVersion)
+    chalk.dim(
+      `- The latest published version on ${chalk.bold("npm")} is`,
+      npmVersion
+    )
   );
 
   if (currentVersion === npmVersion) {
@@ -40,7 +44,9 @@ export async function publish(version?: string) {
       await asyncExec(`yarn publish --new-version ${currentVersion}`);
       console.log(chalk.green.bold(`- published to npm successfully 👍\n`));
     } catch (e) {
-      console.log(chalk.red.bold(`\n- problems publishing to npm: ${e.code}  😡 `));
+      console.log(
+        chalk.red.bold(`\n- problems publishing to npm: ${e.code}  😡 `)
+      );
     }
   }
 }

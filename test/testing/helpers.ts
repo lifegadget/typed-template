@@ -6,7 +6,7 @@ import * as yaml from "js-yaml";
 import * as process from "process";
 import "./test-console"; // TS declaration
 import { stdout, stderr } from "test-console";
-import Handlebars = require("handlebars");
+import Handlebars from "handlebars";
 
 // tslint:disable-next-line
 interface Console {
@@ -43,7 +43,9 @@ export function setupEnv() {
     process.env.AWS_STAGE = "test";
   }
   const current = process.env;
-  const yamlConfig: IDictionary = yaml.safeLoad(fs.readFileSync("./env.yml", "utf8"));
+  const yamlConfig: IDictionary = yaml.safeLoad(
+    fs.readFileSync("./env.yml", "utf8")
+  );
   const combined: IDictionary = {
     ...yamlConfig[process.env.AWS_STAGE],
     ...process.env
@@ -160,7 +162,10 @@ export async function loadData(file: string) {
   });
 }
 
-export async function loadTemplate(file: string, replacements: IDictionary = {}) {
+export async function loadTemplate(
+  file: string,
+  replacements: IDictionary = {}
+) {
   const text = await loadData(file);
   const template = Handlebars.compile(text);
   return template(replacements);
