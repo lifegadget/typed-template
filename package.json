@@ -1,6 +1,6 @@
 {
   "name": "typed-template",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "typed-template",
   "license": "MIT",
   "repository": "https://github.com/lifegadget/typed-template",
@@ -11,7 +11,6 @@
   ],
   "files": [
     "lib",
-    "dist",
     "coverage"
   ],
   "module": "lib/esm/index.js",
