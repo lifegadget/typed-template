@@ -1,6 +1,6 @@
 {
   "name": "typed-template",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "typed-template",
   "license": "MIT",
   "repository": "https://github.com/lifegadget/typed-template",
@@ -14,9 +14,8 @@
     "dist",
     "coverage"
   ],
-  "main": "lib/index.js",
-  "module": "dist/typed-template.es.js",
-  "typings": "lib/index.d.ts",
+  "module": "lib/esm/index.js",
+  "typings": "lib/esm/index.d.ts",
   "scripts": {
     "clean": "rimraf lib",
     "lint": "tslint --force --format verbose \"src/**/*.ts\" -x ''",
