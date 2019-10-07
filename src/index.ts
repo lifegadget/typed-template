@@ -1,10 +1,8 @@
 import { IDictionary } from "common-types";
 import * as path from "path";
-import * as fs from "fs";
-import { fstat, fstatSync, readFileSync, exists } from "fs";
+import { readFileSync, exists } from "fs";
 import * as Handlebars from "handlebars";
-import { Parallel} from "wait-in-parallel";
-import findRoot = require("find-root");
+import { Parallel } from "wait-in-parallel";
 
 export interface IGenericChannelSuggestion {
   emailText?: string;
@@ -60,13 +58,18 @@ export interface ITemplateChannel {
  * The generic passed in at the class level dictates the
  * expected data structure of the "substitutions"
  */
-export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestion> {
+export default class TypedTemplate<
+  T = IDictionary,
+  O = IGenericChannelSuggestion
+> {
   /** Pre-compiles all HBS files into Javascript functions */
   public static precompile() {
     //
   }
 
-  public static create<TT = IDictionary, OO = IGenericChannelSuggestion>(dir?: string) {
+  public static create<TT = IDictionary, OO = IGenericChannelSuggestion>(
+    dir?: string
+  ) {
     const obj = new TypedTemplate<TT, OO>(dir);
     return obj;
   }
@@ -102,7 +105,7 @@ export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestio
     return this;
   }
 
-  public channels(...c: Array<keyof O>) {
+  public channels(...c: Array<keyof O & string>) {
     this._channels = c;
     return this;
   }
@@ -216,12 +219,18 @@ export default class TypedTemplate<T = IDictionary, O = IGenericChannelSuggestio
       }
     }
     throw new Error(
-      `No matching ${type} found for topic "${this._topic}"!\n  ${dirs.join(",\n")}`
+      `No matching ${type} found for topic "${this._topic}"!\n  ${dirs.join(
+        ",\n"
+      )}`
     );
   }
 
   private async getLayout(topic: string, channel: string): Promise<string> {
-    const base = path.join(this._dir, TypedTemplate.BASE_DIR, TypedTemplate.LAYOUTS_DIR);
+    const base = path.join(
+      this._dir,
+      TypedTemplate.BASE_DIR,
+      TypedTemplate.LAYOUTS_DIR
+    );
     const layoutsChoices = [
       path.join(base, `/${channel}/${topic}.hbs`),
       path.join(base, `/${channel}/default.hbs`),
